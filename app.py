@@ -108,9 +108,9 @@ with col_2:
     
     col_p1, col_p2 = st.columns(2)
     with col_p1:
-        textura_fondo = st.selectbox("3A. Patrón del Fondo:", ["Liso Sólido", "Puntos Polka Dot", "Líneas Diagonales", "Cuadrícula Pop", "Olas Chevron"])
+        textura_fondo = st.selectbox("3A. Patrón del Fondo:", ["Liso Sólido", "Triángulos Geométricos", "Olas Chevron", "Rombos 3D", "Ondas Circulares"])
     with col_p2:
-        textura_cuadros = st.selectbox("3B. Patrón de Cuadros:", ["Liso Limpio", "Líneas Tenues", "Micro-rejilla"])
+        textura_cuadros = st.selectbox("3B. Patrón de Cuadros:", ["Liso Limpio", "Geometría Sutil", "Ondas Tenues", "Líneas Diagonales"])
 
 horarios_dict = {
     "La Bodeguita de la 100": "Horario: Lunes a Sábado 12:00 PM a 9:00 PM | Domingos 9:00 AM a 6:00 PM",
@@ -241,27 +241,32 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
     
     modulos_activos = sum([1 if mostrar_llegada else 0, 1 if mostrar_gancho else 0, 1 if mostrar_tabla else 0])
     
-    # --- CONFIGURACIÓN DE PATRONES DE FONDO ---
-    if textura_fondo == "Puntos Polka Dot":
-        css_fondo = "background-image: radial-gradient(rgba(0,0,0,0.06) 15%, transparent 16%), radial-gradient(rgba(255,255,255,0.08) 15%, transparent 16%); background-size: 16px 16px; background-position: 0 0, 8px 8px;"
-    elif textura_fondo == "Líneas Diagonales":
-        css_fondo = "background-image: linear-gradient(45deg, rgba(0,0,0,0.03) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.05) 75%, transparent 75%, transparent); background-size: 20px 20px;"
-    elif textura_fondo == "Cuadrícula Pop":
-        css_fondo = "background-image: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 18px 18px;"
+    # --- CONFIGURACIÓN DE PATRONES DE FONDO GEOMÉTRICOS Y ONDAS ---
+    if textura_fondo == "Triángulos Geométricos":
+        css_fondo = "background-image: linear-gradient(45deg, rgba(0,0,0,0.04) 50%, transparent 50%), linear-gradient(-45deg, rgba(255,255,255,0.06) 50%, transparent 50%); background-size: 30px 30px;"
     elif textura_fondo == "Olas Chevron":
-        css_fondo = "background-image: linear-gradient(135deg, rgba(255,255,255,0.08) 25%, transparent 25%), linear-gradient(225deg, rgba(255,255,255,0.08) 25%, transparent 25%), linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%), linear-gradient(315deg, rgba(0,0,0,0.05) 25%, transparent 25%); background-position: -20px 0, -20px 0, 0 0, 0 0; background-size: 40px 40px;"
+        css_fondo = "background-image: linear-gradient(135deg, rgba(255,255,255,0.06) 25%, transparent 25%), linear-gradient(225deg, rgba(255,255,255,0.06) 25%, transparent 25%), linear-gradient(45deg, rgba(0,0,0,0.04) 25%, transparent 25%), linear-gradient(315deg, rgba(0,0,0,0.04) 25%, transparent 25%); background-position: -20px 0, -20px 0, 0 0, 0 0; background-size: 40px 40px;"
+    elif textura_fondo == "Rombos 3D":
+        css_fondo = "background-image: linear-gradient(45deg, rgba(255,255,255,0.07) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.07) 75%, rgba(255,255,255,0.07)), linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05)); background-size: 40px 40px; background-position: 0 0, 20px 20px;"
+    elif textura_fondo == "Ondas Circulares":
+        css_fondo = "background-image: radial-gradient(circle at 100% 50%, transparent 20%, rgba(255,255,255,0.06) 21%, rgba(255,255,255,0.06) 34%, transparent 35%, transparent), radial-gradient(circle at 0% 50%, transparent 20%, rgba(0,0,0,0.04) 21%, rgba(0,0,0,0.04) 34%, transparent 35%, transparent); background-size: 40px 50px;"
     else:
         css_fondo = ""
 
-    if textura_cuadros == "Líneas Tenues":
-        css_textura_c_oscura = "background-image: repeating-linear-gradient(0deg, transparent, transparent 5px, rgba(255,255,255,0.04) 5px, rgba(255,255,255,0.04) 6px);"
-        css_textura_c_clara = "background-image: repeating-linear-gradient(0deg, transparent, transparent 5px, rgba(0,0,0,0.03) 5px, rgba(0,0,0,0.03) 6px);"
-    elif textura_cuadros == "Micro-rejilla":
-        css_textura_c_oscura = "background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 8px 8px;"
-        css_textura_c_clara = "background-image: radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 8px 8px;"
+    # --- PATRONES INTERNOS PARA LOS CUADROS (MAYOR LEGIBILIDAD) ---
+    if textura_cuadros == "Geometría Sutil":
+        css_textura_c_oscura = "background-image: linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.03) 75%), linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.03) 75%); background-size: 20px 20px; background-position: 0 0, 10px 10px;"
+        css_textura_c_clara = "background-image: linear-gradient(45deg, rgba(0,0,0,0.02) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.02) 75%), linear-gradient(45deg, rgba(0,0,0,0.02) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.02) 75%); background-size: 20px 20px; background-position: 0 0, 10px 10px;"
+    elif textura_cuadros == "Ondas Tenues":
+        css_textura_c_oscura = "background-image: radial-gradient(circle, transparent 20%, rgba(255,255,255,0.03) 20%, rgba(255,255,255,0.03) 80%, transparent 80%, transparent); background-size: 30px 30px;"
+        css_textura_c_clara = "background-image: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.02) 20%, rgba(0,0,0,0.02) 80%, transparent 80%, transparent); background-size: 30px 30px;"
+    elif textura_cuadros == "Líneas Diagonales":
+        css_textura_c_oscura = "background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 12px);"
+        css_textura_c_clara = "background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.03) 10px, rgba(0,0,0,0.03) 12px);"
     else:
         css_textura_c_oscura = ""
         css_textura_c_clara = ""
+
 
     # --- ESCALAS FUERTES Y RECALIBRADAS (NUEVO: FUENTES MÁS GRANDES) ---
     if modulos_activos == 1:
@@ -334,7 +339,16 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
         bloques_desc_html = ""
         for desc, categories in sorted(grupos_desc.items(), reverse=True):
             texto_cats = " Y ".join(categories) if len(categories) <= 2 else ", ".join(categories[:-1]) + " Y " + categories[-1]
-            bloques_desc_html += f"<div style='margin-bottom:8px; display:flex; align-items:center;'><span style='font-family:{c_fuente['titulos']}; font-size:{size_porcentaje}; color:#fff; background:{c_paleta['acento']}; padding:1px 10px; border-radius:6px; border:2px solid {c_paleta['borde_canvas']}; box-shadow:2px 2px 0 {c_paleta['borde_canvas']}; min-width:65px; text-align:center;'>{desc}%</span><span style='font-size:{size_texto}; font-weight:900; margin-left:12px; line-height:1.2; text-align:left; font-family:{c_fuente['cuerpo']}; color:{c_paleta['card_clara_fg']};'>DE DESCUENTO EN<br><span style='color:{c_paleta['acento']};'>{texto_cats}</span></span></div>"
+            bloques_desc_html += f"""
+            <div style='margin-bottom:8px; display:flex; align-items:center;'>
+                <div style='display:flex; justify-content:center; align-items:center; min-width:85px; width:85px; height:85px; background-color:{c_paleta['acento']}; color:#fff; font-family:{c_fuente['titulos']}; font-size:{size_porcentaje}; text-shadow:2px 2px 0px rgba(0,0,0,0.4); margin-right:12px; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);'>
+                    {desc}%
+                </div>
+                <span style='font-size:{size_texto}; font-weight:900; margin-left:12px; line-height:1.2; text-align:left; font-family:{c_fuente['cuerpo']}; color:{c_paleta['card_clara_fg']};'>
+                    DE DESCUENTO EN<br><span style='color:{c_paleta['acento']};'>{texto_cats}</span>
+                </span>
+            </div>
+            """
             
         html_modulos += f"""
         <div style='background:{c_paleta['card_clara_bg']}; {css_textura_c_clara} border:3px solid {c_paleta['borde_canvas']}; padding:10px 12px; margin-bottom:8px; box-shadow:0 3px 0 {c_paleta['borde_canvas']};'>
