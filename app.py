@@ -5,8 +5,7 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Generador de Publicidad - La Bodeguita", layout="wide")
 
-st.title("Automator Pro: La Bodeguita (Espacios Optimizados 9:16)")
-st.write("Estructura de márgenes ultra-compactos para maximizar el tamaño de las fuentes.")
+st.title("GENERADOR DE ANUNCIOS LA BODEGUITA")
 
 # --- INICIALIZACIÓN DE ESTADOS DINÁMICOS ---
 if "llegada_custom" not in st.session_state:
@@ -57,6 +56,14 @@ paletas = {
     "⚪ Moda Boutique (Blanco/Gris Oxford/Negro)": {
         "bg_canvas": "#FFFFFF", "borde_canvas": "#111111", "texto_ppal": "#111111", "acento": "#555555",
         "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#F5F5F5", "card_clara_fg": "#111111"
+    },
+    "🌾 Mercado de Barrio (Crema/Café/Terracota)": {
+        "bg_canvas": "#F2E9D8", "borde_canvas": "#2B1B12", "texto_ppal": "#2B1B12", "acento": "#C1502E",
+        "card_oscura_bg": "#3A4A33", "card_oscura_fg": "#F2E9D8", "card_clara_bg": "#FBF6EC", "card_clara_fg": "#2B1B12"
+    },
+    "🌷 Boutique Rosa Polvo (Rosa Empolvado/Vino/Oro Envejecido)": {
+        "bg_canvas": "#EFD9D3", "borde_canvas": "#5C2A2A", "texto_ppal": "#5C2A2A", "acento": "#B68A3D",
+        "card_oscura_bg": "#5C2A2A", "card_oscura_fg": "#F4E9E2", "card_clara_bg": "#FBF1ED", "card_clara_fg": "#5C2A2A"
     }
 }
 
@@ -81,15 +88,23 @@ fuentes = {
     "🎈 Escolar y Dinámico (Fredoka + Quicksand)": {
         "import": "@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Quicksand:wght@700&display=swap');",
         "titulos": "'Fredoka', sans-serif", "cuerpo": "'Quicksand', sans-serif"
+    },
+    "🌾 Editorial Cálido (Fraunces + Work Sans)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;900&family=Work+Sans:wght@600;700&display=swap');",
+        "titulos": "'Fraunces', serif", "cuerpo": "'Work Sans', sans-serif"
+    },
+    "🌷 Romance Boutique (Cormorant + Karla)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@600;700&family=Karla:wght@600;700&display=swap');",
+        "titulos": "'Cormorant', serif", "cuerpo": "'Karla', sans-serif"
     }
 }
 
 # --- LISTAS DE CATEGORÍAS FIJAS ---
 categorias_ropa = ["Bebé", "Niño y Niña", "Dama", "Caballero", "Tallas Extra"]
 categorias_otros = [
-    "Zapatos, Bolsas, Juguetes y Vitrina",
-    "Trajes de baño, Playa y Lencería",
-    "Ropa de casa (Edredones, toallas, etc.)"
+    "Zapatos, Bolsas, Juguetes y Accesorios de vitrina",
+    "Trajes de baño, salidas de playa, corsetería y lencería",
+    "Ropa de casa: Edredones, cortinas, frazadas, toallas, etc."
 ]
 categorias_totales = categorias_ropa + categorias_otros
 
@@ -217,6 +232,26 @@ with tabs[2]:
 
 st.markdown("---")
 
+def ajustar_brillo(color_hex, factor):
+    """Aclara (factor>0) u oscurece (factor<0) un color #RRGGBB de forma
+    proporcional. Se usa para construir degradados de profundidad a partir
+    de un único color de la paleta, sin tener que definir tonos extra."""
+    color_hex = color_hex.lstrip("#")
+    r, g, b = int(color_hex[0:2], 16), int(color_hex[2:4], 16), int(color_hex[4:6], 16)
+    def ajustar(c):
+        nuevo = c + (255 - c) * factor if factor >= 0 else c * (1 + factor)
+        return max(0, min(255, int(nuevo)))
+    r, g, b = ajustar(r), ajustar(g), ajustar(b)
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+def hex_a_rgba(color_hex, alpha):
+    """Convierte un color #RRGGBB a 'rgba(r,g,b,alpha)' para poder usarlo
+    en degradados translúcidos (necesario porque los navegadores que
+    procesan html2canvas no soportan bien color-mix())."""
+    color_hex = color_hex.lstrip("#")
+    r, g, b = int(color_hex[0:2], 16), int(color_hex[2:4], 16), int(color_hex[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
+
 def generar_estrella_clip_path(puntas=8, factor_radio_interno=0.5):
     """Genera un clip-path 'polygon(...)' para una estrella de N puntas,
     calculando cada vértice con trigonometría en vez de escribir coordenadas
@@ -234,7 +269,7 @@ def generar_estrella_clip_path(puntas=8, factor_radio_interno=0.5):
         vertices.append(f"{x:.2f}% {y:.2f}%")
     return "polygon(" + ", ".join(vertices) + ")"
 
-ESTRELLA_INSIGNIA_CLIP = generar_estrella_clip_path(puntas=8, factor_radio_interno=0.55)
+ESTRELLA_INSIGNIA_CLIP = generar_estrella_clip_path(puntas=8, factor_radio_interno=0.6)
 
 # --- MOTOR DE CONTRASTE AUTOMÁTICO ---
 # Evita que, en paletas como "Elegancia Nocturna" o "Descuento Neón", un
@@ -286,6 +321,11 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
     texto_sobre_borde = texto_legible_sobre(c_paleta['borde_canvas'])   # para el ribbon del gancho
     texto_sobre_acento = texto_legible_sobre(c_paleta['acento'])       # para la insignia de % y title-pills
     acento_en_claro = color_destacado_seguro(c_paleta['card_clara_bg'], c_paleta['acento'], c_paleta['card_clara_fg'])  # para resaltes dentro de tarjetas claras
+    ticket_wash = hex_a_rgba(c_paleta['acento'], 0.16)     # lavado de color exclusivo del ticket de precios
+    ticket_raya = hex_a_rgba(c_paleta['acento'], 0.07)     # micro-rayado tipo "papel de ticket"
+    card_dark_grad_b = ajustar_brillo(c_paleta['card_oscura_bg'], -0.20)   # esquina más oscura para dar profundidad
+    card_light_grad_b = ajustar_brillo(c_paleta['card_clara_bg'], -0.05)  # esquina sutilmente más oscura
+    acento_resplandor = hex_a_rgba(c_paleta['acento'], 0.55)              # brillo de color detrás de la insignia
     
     # --- CONFIGURACIÓN DE PATRONES DE FONDO GEOMÉTRICOS Y ONDAS ---
     if textura_fondo == "Triángulos Geométricos":
@@ -314,27 +354,28 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
         css_textura_c_clara = ""
 
 
+
     # --- ESCALAS RECALIBRADAS: fuentes más grandes para reducir espacios vacíos ---
     if modulos_activos == 1:
         size_sucursal = "54px"
         size_titulo_modulo = "30px"
         size_subheading_llegada = "23px"
         size_texto = "23px"  # Categorías gigantes
-        size_porcentaje = "44px"
+        size_porcentaje = "38px"
         size_precio = "27px"
     elif modulos_activos == 2:
         size_sucursal = "46px"
         size_titulo_modulo = "26px"
         size_subheading_llegada = "20px"
         size_texto = "20px"  # Categorías muy visibles
-        size_porcentaje = "38px"
+        size_porcentaje = "33px"
         size_precio = "23px"
     else: 
         size_sucursal = "40px"
         size_titulo_modulo = "23px"
         size_subheading_llegada = "17px"
         size_texto = "18px"  # Formato compacto pero con presencia
-        size_porcentaje = "33px"
+        size_porcentaje = "29px"
         size_precio = "20px"
 
     sufijo_sucursal = html.escape(sucursal.replace("La Bodeguita ", "").upper())
@@ -424,8 +465,9 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
             """
         
         html_modulos += f"""
-        <div class="card card-light">
-            <h3 class="title-pill dark-bg">ROPA DE TABLA</h3>
+        <div class="card card-tabla">
+            <div class="ticket-header">ROPA DE TABLA</div>
+            <div class="ticket-perforacion"></div>
             <div class="grid-precios">
                 {items_tabla}
             </div>
@@ -480,7 +522,11 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 padding: 20px 16px;
                 border: 3px solid var(--borde-canvas);
                 border-radius: 22px;
-                box-shadow: 0 22px 45px -14px rgba(0,0,0,0.35);
+                box-shadow:
+                    inset 0 0 0 2px rgba(255,255,255,0.18),
+                    inset 0 2px 10px rgba(255,255,255,0.12),
+                    0 26px 50px -16px rgba(0,0,0,0.45),
+                    0 4px 10px rgba(0,0,0,0.15);
                 margin: 0 auto;
                 position: relative;
                 overflow: hidden;
@@ -493,14 +539,14 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
             .ribbon-gancho {{
                 font-size: 22px;
                 font-family: var(--font-title);
-                background: var(--borde-canvas);
+                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['borde_canvas'], 0.12)} 0%, var(--borde-canvas) 60%);
                 color: var(--texto-sobre-borde);
-                padding: 9px 10px;
-                border-radius: 12px;
+                padding: 10px 14px 18px 14px;
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 line-height: 1.15;
-                box-shadow: 0 6px 14px -6px rgba(0,0,0,0.35);
+                box-shadow: 0 10px 16px -8px rgba(0,0,0,0.45);
+                clip-path: polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%);
             }}
 
             .masthead {{ line-height: 1; }}
@@ -522,17 +568,40 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 letter-spacing: 0.5px;
                 font-weight: 900;
                 white-space: nowrap;
+                text-shadow: 0 2px 0 rgba(0,0,0,0.12);
             }}
 
             /* --- TARJETAS --- */
             .card {{
+                position: relative;
                 border-radius: 16px;
-                padding: 14px 14px;
+                padding: 16px 15px;
                 text-align: left;
-                box-shadow: 0 10px 22px -10px rgba(0,0,0,0.30);
+                box-shadow:
+                    0 2px 0 rgba(255,255,255,0.10) inset,
+                    0 14px 26px -12px rgba(0,0,0,0.40),
+                    0 3px 6px rgba(0,0,0,0.12);
             }}
-            .card-dark {{ background: var(--card-dark-bg); color: var(--card-dark-fg); {css_textura_c_oscura} }}
-            .card-light {{ background: var(--card-light-bg); color: var(--card-light-fg); {css_textura_c_clara} }}
+            .card-dark::before, .card-light::before {{
+                content: "";
+                position: absolute;
+                top: 0; left: 0; right: 0;
+                height: 6px;
+                background: var(--acento);
+                border-radius: 16px 16px 0 0;
+            }}
+            .card-dark {{
+                background: linear-gradient(155deg, var(--card-dark-bg) 0%, {card_dark_grad_b} 100%);
+                color: var(--card-dark-fg);
+                border: 1px solid rgba(255,255,255,0.08);
+                {css_textura_c_oscura}
+            }}
+            .card-light {{
+                background: linear-gradient(155deg, var(--card-light-bg) 0%, {card_light_grad_b} 100%);
+                color: var(--card-light-fg);
+                border: 1px solid rgba(0,0,0,0.06);
+                {css_textura_c_clara}
+            }}
 
             .title-glow {{
                 text-align: center;
@@ -541,10 +610,11 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 letter-spacing: 1px;
                 line-height: 1.15;
                 margin: 0 0 10px 0;
-                padding: 6px 10px;
+                padding: 7px 10px;
                 border-radius: 10px;
-                background: var(--acento);
+                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['acento'], 0.15)} 0%, var(--acento) 100%);
                 color: var(--texto-sobre-acento);
+                box-shadow: 0 5px 10px -4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
                 white-space: nowrap;
             }}
             .title-pill {{
@@ -553,13 +623,18 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 font-size: var(--size-modulo);
                 letter-spacing: 0.5px;
                 line-height: 1.15;
-                padding: 6px 10px;
+                padding: 7px 10px;
                 border-radius: 10px;
                 margin: 0 0 10px 0;
-                background: var(--bg-canvas);
+                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['bg_canvas'], 0.10)} 0%, var(--bg-canvas) 100%);
                 color: var(--texto-ppal);
+                box-shadow: 0 5px 10px -4px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
             }}
-            .title-pill.dark-bg {{ background: var(--card-dark-bg); color: var(--card-dark-fg); white-space: nowrap; }}
+            .title-pill.dark-bg {{
+                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['card_oscura_bg'], 0.10)} 0%, var(--card-dark-bg) 100%);
+                color: var(--card-dark-fg);
+                white-space: nowrap;
+            }}
 
             .pill-fecha {{
                 text-align: center;
@@ -603,13 +678,17 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                min-width: 104px;
-                width: 104px;
-                height: 104px;
+                min-width: 118px;
+                width: 118px;
+                height: 118px;
                 clip-path: {ESTRELLA_INSIGNIA_CLIP};
-                background: radial-gradient(circle at 35% 28%, rgba(255,255,255,0.45), rgba(255,255,255,0) 65%), var(--acento);
-                filter: drop-shadow(0 8px 10px rgba(0,0,0,0.45));
-                margin-right: 14px;
+                background:
+                    radial-gradient(circle at 32% 26%, rgba(255,255,255,0.55), rgba(255,255,255,0) 55%),
+                    linear-gradient(155deg, {ajustar_brillo(c_paleta['acento'], 0.10)} 0%, var(--acento) 70%);
+                filter:
+                    drop-shadow(0 0 16px {acento_resplandor})
+                    drop-shadow(0 8px 8px rgba(0,0,0,0.40));
+                margin-right: 12px;
                 flex-shrink: 0;
             }}
             .badge-num {{
@@ -627,20 +706,66 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
             }}
             .texto-categoria {{ color: var(--acento-en-claro); }}
 
-            /* --- TABLA DE PRECIOS --- */
+            /* --- TABLA DE PRECIOS: TARJETA TIPO TICKET (identidad propia) --- */
+            .card-tabla {{
+                position: relative;
+                background-color: var(--card-light-bg);
+                background-image:
+                    repeating-linear-gradient(135deg, {ticket_raya} 0px 6px, transparent 6px 14px),
+                    linear-gradient(160deg, {ticket_wash} 0%, transparent 65%);
+                color: var(--card-light-fg);
+                border: 2px dashed var(--acento);
+                padding: 0 14px 16px 14px;
+                overflow: hidden;
+                box-shadow: inset 0 0 18px rgba(0,0,0,0.06);
+            }}
+            .ticket-header {{
+                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['borde_canvas'], 0.12)} 0%, var(--borde-canvas) 70%);
+                color: var(--texto-sobre-borde);
+                font-family: var(--font-title);
+                font-size: var(--size-modulo);
+                text-align: center;
+                letter-spacing: 1px;
+                line-height: 1.3;
+                padding: 9px 10px;
+                margin: 0 -14px 0 -14px;
+                white-space: nowrap;
+                box-shadow: 0 4px 10px -4px rgba(0,0,0,0.3);
+            }}
+            .ticket-perforacion {{
+                position: relative;
+                border-bottom: 2px dashed var(--acento);
+                opacity: 0.55;
+                margin: 12px 0 12px 0;
+            }}
+            .ticket-perforacion::before, .ticket-perforacion::after {{
+                content: "";
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: var(--bg-canvas);
+            }}
+            .ticket-perforacion::before {{ left: -9px; }}
+            .ticket-perforacion::after {{ right: -9px; }}
             .grid-precios {{
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }}
             .chip-precio {{
-                background: rgba(127,127,127,0.08);
+                position: relative;
+                background: linear-gradient(155deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%);
                 border-left: 4px solid var(--acento-en-claro);
                 border-radius: 8px;
-                padding: 7px 9px;
+                padding: 8px 10px;
                 display: flex;
                 flex-direction: column;
                 font-family: var(--font-body);
+                box-shadow: 0 4px 8px -4px rgba(0,0,0,0.22);
+                clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 0 100%);
             }}
             .chip-cat {{ font-size: var(--size-texto); font-weight: 900; line-height: 1.15; }}
             .chip-precio-valor {{ font-size: var(--size-texto); font-weight: 900; line-height: 1.15; }}
@@ -648,13 +773,13 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
 
             /* --- PIE: VIGENCIA Y HORARIO --- */
             .footer-bar {{
-                background: var(--borde-canvas);
+                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['borde_canvas'], 0.12)} 0%, var(--borde-canvas) 70%);
                 color: var(--bg-canvas);
-                padding: 10px 12px;
-                border-radius: 14px;
+                padding: 16px 12px 10px 12px;
                 text-align: center;
                 margin-top: auto;
-                box-shadow: 0 6px 14px -6px rgba(0,0,0,0.30);
+                box-shadow: 0 -2px 14px -6px rgba(0,0,0,0.25), 0 8px 16px -8px rgba(0,0,0,0.35);
+                clip-path: polygon(0% 18%, 50% 0%, 100% 18%, 100% 100%, 0% 100%);
             }}
             .footer-bar .vigencia {{
                 font-size: 19px;
