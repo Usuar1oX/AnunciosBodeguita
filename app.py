@@ -5,7 +5,7 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Generador de Publicidad - La Bodeguita", layout="wide")
 
-st.title("GENERADOR DE ANUNCIOS LA BODEGUITA")
+st.title("✨ GENERADOR DE ANUNCIOS PREMIUM - LA BODEGUITA")
 
 # --- INICIALIZACIÓN DE ESTADOS DINÁMICOS ---
 if "llegada_custom" not in st.session_state:
@@ -17,85 +17,75 @@ if "tabla_custom" not in st.session_state:
 
 # --- SELECTOR DE PALETAS DE COLORES ---
 paletas = {
-    "🟡 Tradicional La Bodeguita (Amarillo/Negro/Rojo)": {
-        "bg_canvas": "#FFDE00", "borde_canvas": "#000000", "texto_ppal": "#000000", "acento": "#D32F2F",
-        "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#000000"
+    "🟡 Tradicional (Amarillo/Negro/Rojo)": {
+        "bg_canvas": "#FFDE00", "borde_canvas": "#111111", "texto_ppal": "#111111", "acento": "#D32F2F",
+        "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111",
+        "precio_color": "#D32F2F"
     },
     "🔴 Oferta Agresiva (Rojo/Blanco/Amarillo)": {
         "bg_canvas": "#D32F2F", "borde_canvas": "#FFFFFF", "texto_ppal": "#FFFFFF", "acento": "#FFDE00",
-        "card_oscura_bg": "#FFFFFF", "card_oscura_fg": "#000000", "card_clara_bg": "#111111", "card_clara_fg": "#FFFFFF"
+        "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111",
+        "descuento_color": "#CC9900"
     },
     "⚫ Elegancia Nocturna (Negro/Blanco/Oro)": {
         "bg_canvas": "#111111", "borde_canvas": "#FFD700", "texto_ppal": "#FFFFFF", "acento": "#FFD700",
-        "card_oscura_bg": "#222222", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#000000"
+        "card_oscura_bg": "#222222", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111",
+        "descuento_color": "#FFD700", "precio_color": "#B8860B"
     },
-    "🔵 Clásico Americano (Azul Marino/Rojo/Blanco)": {
+    "🔵 Clásico Americano (Azul Marino/Rojo)": {
         "bg_canvas": "#002366", "borde_canvas": "#FFFFFF", "texto_ppal": "#FFFFFF", "acento": "#D32F2F",
-        "card_oscura_bg": "#FFFFFF", "card_oscura_fg": "#000000", "card_clara_bg": "#111111", "card_clara_fg": "#FFFFFF"
+        "card_oscura_bg": "#0A192F", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111"
     },
-    "🟢 Descuento Neón (Negro/Verde Neón/Blanco)": {
-        "bg_canvas": "#000000", "borde_canvas": "#39FF14", "texto_ppal": "#39FF14", "acento": "#FFFFFF",
-        "card_oscura_bg": "#1A1A1A", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#000000"
+    "🟢 Descuento Neón (Negro/Verde Neón)": {
+        "bg_canvas": "#050505", "borde_canvas": "#39FF14", "texto_ppal": "#39FF14", "acento": "#39FF14",
+        "card_oscura_bg": "#1A1A1A", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111",
+        "descuento_color": "#39FF14", "precio_color": "#1aad00"
     },
-    "🌸 Impacto Fucsia (Rosa Encendido/Negro/Blanco)": {
-        "bg_canvas": "#FF007F", "borde_canvas": "#000000", "texto_ppal": "#FFFFFF", "acento": "#000000",
-        "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#000000"
+    "🌸 Impacto Fucsia (Rosa/Negro/Blanco)": {
+        "bg_canvas": "#FF007F", "borde_canvas": "#111111", "texto_ppal": "#FFFFFF", "acento": "#111111",
+        "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111",
+        "descuento_color": "#FF007F"
     },
-    "🟤 Estilo Vintage (Crema/Marrón/Ladrillo)": {
+    "🟤 Estilo Vintage (Crema/Marrón)": {
         "bg_canvas": "#F5F5DC", "borde_canvas": "#4A2E1B", "texto_ppal": "#4A2E1B", "acento": "#B22222",
         "card_oscura_bg": "#4A2E1B", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#4A2E1B"
     },
-    "🟠 Otoño Cálido (Mostaza/Naranja/Negro)": {
-        "bg_canvas": "#E5A93C", "borde_canvas": "#111111", "texto_ppal": "#111111", "acento": "#D35400",
-        "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111"
+    "💎 Verano Fresco (Turquesa/Coral)": {
+        "bg_canvas": "#40E0D0", "borde_canvas": "#111111", "texto_ppal": "#111111", "acento": "#FF6F61",
+        "card_oscura_bg": "#004040", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#111111",
+        "precio_color": "#E84A3A"
     },
-    "💎 Verano Fresco (Turquesa/Blanco/Coral)": {
-        "bg_canvas": "#40E0D0", "borde_canvas": "#000000", "texto_ppal": "#000000", "acento": "#FF6F61",
-        "card_oscura_bg": "#004040", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#FFFFFF", "card_clara_fg": "#000000"
-    },
-    "⚪ Moda Boutique (Blanco/Gris Oxford/Negro)": {
-        "bg_canvas": "#FFFFFF", "borde_canvas": "#111111", "texto_ppal": "#111111", "acento": "#555555",
+    "⚪ Moda Boutique (Blanco/Negro)": {
+        "bg_canvas": "#FFFFFF", "borde_canvas": "#111111", "texto_ppal": "#111111", "acento": "#111111",
         "card_oscura_bg": "#111111", "card_oscura_fg": "#FFFFFF", "card_clara_bg": "#F5F5F5", "card_clara_fg": "#111111"
-    },
-    "🌾 Mercado de Barrio (Crema/Café/Terracota)": {
-        "bg_canvas": "#F2E9D8", "borde_canvas": "#2B1B12", "texto_ppal": "#2B1B12", "acento": "#C1502E",
-        "card_oscura_bg": "#3A4A33", "card_oscura_fg": "#F2E9D8", "card_clara_bg": "#FBF6EC", "card_clara_fg": "#2B1B12"
-    },
-    "🌷 Boutique Rosa Polvo (Rosa Empolvado/Vino/Oro Envejecido)": {
-        "bg_canvas": "#EFD9D3", "borde_canvas": "#5C2A2A", "texto_ppal": "#5C2A2A", "acento": "#B68A3D",
-        "card_oscura_bg": "#5C2A2A", "card_oscura_fg": "#F4E9E2", "card_clara_bg": "#FBF1ED", "card_clara_fg": "#5C2A2A"
     }
 }
 
 # --- SELECTOR DE FUENTES (GOOGLE FONTS) ---
 fuentes = {
-    "💥 Impacto Urbano (Bebas Neue + Montserrat)": {
-        "import": "@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap');",
-        "titulos": "'Bebas Neue', sans-serif", "cuerpo": "'Montserrat', sans-serif"
+    "💥 Impacto Urbano (Montserrat + Inter)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;900&display=swap');",
+        "titulos": "'Montserrat', sans-serif", "cuerpo": "'Inter', sans-serif"
     },
-    "🎯 Comercial Moderno (Oswald + Roboto)": {
-        "import": "@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@700;900&display=swap');",
-        "titulos": "'Oswald', sans-serif", "cuerpo": "'Roboto', sans-serif"
+    "🎯 Comercial Moderno (Roboto Condensed + Roboto)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;900&family=Roboto:wght@400;500;700;900&display=swap');",
+        "titulos": "'Roboto Condensed', sans-serif", "cuerpo": "'Roboto', sans-serif"
     },
-    "💎 Boutique Elegante (Playfair Display + Lora)": {
-        "import": "@import url('https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Playfair+Display:wght@700;900&display=swap');",
-        "titulos": "'Playfair Display', serif", "cuerpo": "'Lora', serif"
+    "💎 Boutique Elegante (Merriweather + Lora)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;700&family=Merriweather:wght@700;900&display=swap');",
+        "titulos": "'Merriweather', serif", "cuerpo": "'Lora', serif"
     },
-    "👾 Retro / Ofertas Locas (Rubik Mono One + Rubik)": {
-        "import": "@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Rubik:wght@700;900&display=swap');",
-        "titulos": "'Rubik Mono One', sans-serif", "cuerpo": "'Rubik', sans-serif"
+    "🎨 Minimalista Moderno (Poppins + Open Sans)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@700;800;900&display=swap');",
+        "titulos": "'Poppins', sans-serif", "cuerpo": "'Open Sans', sans-serif"
     },
-    "🎈 Escolar y Dinámico (Fredoka + Quicksand)": {
-        "import": "@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Quicksand:wght@700&display=swap');",
-        "titulos": "'Fredoka', sans-serif", "cuerpo": "'Quicksand', sans-serif"
+    "🎈 Escolar y Dinámico (Nunito + Quicksand)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Quicksand:wght@600;700&display=swap');",
+        "titulos": "'Nunito', sans-serif", "cuerpo": "'Quicksand', sans-serif"
     },
-    "🌾 Editorial Cálido (Fraunces + Work Sans)": {
-        "import": "@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;900&family=Work+Sans:wght@600;700&display=swap');",
-        "titulos": "'Fraunces', serif", "cuerpo": "'Work Sans', sans-serif"
-    },
-    "🌷 Romance Boutique (Cormorant + Karla)": {
-        "import": "@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@600;700&family=Karla:wght@600;700&display=swap');",
-        "titulos": "'Cormorant', serif", "cuerpo": "'Karla', sans-serif"
+    "🌾 Estilo Orgánico (Bitter + Work Sans)": {
+        "import": "@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@700;900&family=Work+Sans:wght@500;700&display=swap');",
+        "titulos": "'Bitter', serif", "cuerpo": "'Work Sans', sans-serif"
     }
 }
 
@@ -123,11 +113,7 @@ with col_2:
     fuente_sel = st.selectbox("2. Combinación Tipográfica (Fuentes):", list(fuentes.keys()))
     c_fuente = fuentes[fuente_sel]
     
-    col_p1, col_p2 = st.columns(2)
-    with col_p1:
-        textura_fondo = st.selectbox("3A. Patrón del Fondo:", ["Liso Sólido", "Triángulos Geométricos", "Olas Chevron", "Rombos 3D", "Ondas Circulares"])
-    with col_p2:
-        textura_cuadros = st.selectbox("3B. Patrón de Cuadros:", ["Liso Limpio", "Geometría Sutil", "Ondas Tenues", "Líneas Diagonales"])
+    textura_fondo = st.selectbox("3. Patrón del Fondo:", ["Liso Sólido", "Triángulos Geométricos", "Olas Chevron", "Rombos 3D", "Ondas Circulares"])
 
 horarios_dict = {
     "La Bodeguita de la 100": "Horario: Lunes a Sábado 12:00 PM a 9:00 PM | Domingos 9:00 AM a 6:00 PM",
@@ -233,9 +219,6 @@ with tabs[2]:
 st.markdown("---")
 
 def ajustar_brillo(color_hex, factor):
-    """Aclara (factor>0) u oscurece (factor<0) un color #RRGGBB de forma
-    proporcional. Se usa para construir degradados de profundidad a partir
-    de un único color de la paleta, sin tener que definir tonos extra."""
     color_hex = color_hex.lstrip("#")
     r, g, b = int(color_hex[0:2], 16), int(color_hex[2:4], 16), int(color_hex[4:6], 16)
     def ajustar(c):
@@ -245,36 +228,10 @@ def ajustar_brillo(color_hex, factor):
     return f"#{r:02x}{g:02x}{b:02x}"
 
 def hex_a_rgba(color_hex, alpha):
-    """Convierte un color #RRGGBB a 'rgba(r,g,b,alpha)' para poder usarlo
-    en degradados translúcidos (necesario porque los navegadores que
-    procesan html2canvas no soportan bien color-mix())."""
     color_hex = color_hex.lstrip("#")
     r, g, b = int(color_hex[0:2], 16), int(color_hex[2:4], 16), int(color_hex[4:6], 16)
     return f"rgba({r},{g},{b},{alpha})"
 
-def generar_estrella_clip_path(puntas=8, factor_radio_interno=0.5):
-    """Genera un clip-path 'polygon(...)' para una estrella de N puntas,
-    calculando cada vértice con trigonometría en vez de escribir coordenadas
-    a mano. factor_radio_interno controla qué tan picudas son las puntas
-    (más bajo = puntas más afiladas)."""
-    vertices = []
-    total_vertices = puntas * 2
-    radio_externo = 50.0
-    radio_interno = radio_externo * factor_radio_interno
-    for i in range(total_vertices):
-        angulo = (math.pi / puntas) * i - (math.pi / 2)
-        radio = radio_externo if i % 2 == 0 else radio_interno
-        x = 50 + radio * math.cos(angulo)
-        y = 50 + radio * math.sin(angulo)
-        vertices.append(f"{x:.2f}% {y:.2f}%")
-    return "polygon(" + ", ".join(vertices) + ")"
-
-ESTRELLA_INSIGNIA_CLIP = generar_estrella_clip_path(puntas=8, factor_radio_interno=0.6)
-
-# --- MOTOR DE CONTRASTE AUTOMÁTICO ---
-# Evita que, en paletas como "Elegancia Nocturna" o "Descuento Neón", un
-# texto quede invisible por tener casi la misma luminosidad que su fondo
-# (ej. blanco sobre amarillo dorado, o blanco sobre blanco).
 def luminancia(color_hex):
     color_hex = color_hex.lstrip("#")
     r, g, b = int(color_hex[0:2], 16), int(color_hex[2:4], 16), int(color_hex[4:6], 16)
@@ -284,14 +241,10 @@ def texto_legible_sobre(color_hex):
     return "#161616" if luminancia(color_hex) > 0.6 else "#FFFFFF"
 
 def color_destacado_seguro(fondo_hex, candidato_hex, alterno_hex, umbral=0.35):
-    """Usa `candidato_hex` (normalmente el acento) como color de texto/resalte,
-    salvo que su luminosidad sea demasiado parecida a la del fondo donde se
-    dibuja, en cuyo caso cae a `alterno_hex` para seguir siendo legible."""
     if abs(luminancia(fondo_hex) - luminancia(candidato_hex)) < umbral:
         return alterno_hex
     return candidato_hex
 
-# --- MOTOR LÓGICO DE FUSIÓN ---
 def fusionar_adultos(lista_o_dict):
     if isinstance(lista_o_dict, list):
         if "Dama" in lista_o_dict and "Caballero" in lista_o_dict:
@@ -317,17 +270,25 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
     
     modulos_activos = sum([1 if mostrar_llegada else 0, 1 if mostrar_gancho else 0, 1 if mostrar_tabla else 0])
 
-    # Colores de texto calculados para garantizar contraste sin importar la paleta
-    texto_sobre_borde = texto_legible_sobre(c_paleta['borde_canvas'])   # para el ribbon del gancho
-    texto_sobre_acento = texto_legible_sobre(c_paleta['acento'])       # para la insignia de % y title-pills
-    acento_en_claro = color_destacado_seguro(c_paleta['card_clara_bg'], c_paleta['acento'], c_paleta['card_clara_fg'])  # para resaltes dentro de tarjetas claras
-    ticket_wash = hex_a_rgba(c_paleta['acento'], 0.16)     # lavado de color exclusivo del ticket de precios
-    ticket_raya = hex_a_rgba(c_paleta['acento'], 0.07)     # micro-rayado tipo "papel de ticket"
-    card_dark_grad_b = ajustar_brillo(c_paleta['card_oscura_bg'], -0.20)   # esquina más oscura para dar profundidad
-    card_light_grad_b = ajustar_brillo(c_paleta['card_clara_bg'], -0.05)  # esquina sutilmente más oscura
-    acento_resplandor = hex_a_rgba(c_paleta['acento'], 0.55)              # brillo de color detrás de la insignia
+    texto_sobre_borde = texto_legible_sobre(c_paleta['borde_canvas'])
+    texto_sobre_acento = texto_legible_sobre(c_paleta['acento'])
     
-    # --- CONFIGURACIÓN DE PATRONES DE FONDO GEOMÉTRICOS Y ONDAS ---
+    # Safe contrast accents
+    acento_claro = color_destacado_seguro(c_paleta['card_clara_bg'], c_paleta['acento'], c_paleta['card_clara_fg'])
+    acento_oscuro = color_destacado_seguro(c_paleta['card_oscura_bg'], c_paleta['acento'], c_paleta['card_oscura_fg'])
+    acento_canvas = color_destacado_seguro(c_paleta['bg_canvas'], c_paleta['acento'], c_paleta['texto_ppal'])
+    
+    # Per-palette overrides for price and discount badge colors
+    color_precio_alt = c_paleta.get('precio_color', None)
+    if color_precio_alt is None:
+        color_precio_alt = color_destacado_seguro(c_paleta['card_clara_bg'], c_paleta['bg_canvas'], c_paleta['card_clara_fg'])
+        if color_precio_alt == acento_claro:
+            color_precio_alt = color_destacado_seguro(c_paleta['card_clara_bg'], c_paleta['borde_canvas'], c_paleta['card_clara_fg'])
+    
+    color_descuento_alt = c_paleta.get('descuento_color', None)
+    if color_descuento_alt is None:
+        color_descuento_alt = acento_oscuro
+    
     if textura_fondo == "Triángulos Geométricos":
         css_fondo = "background-image: linear-gradient(45deg, rgba(0,0,0,0.04) 50%, transparent 50%), linear-gradient(-45deg, rgba(255,255,255,0.06) 50%, transparent 50%); background-size: 30px 30px;"
     elif textura_fondo == "Olas Chevron":
@@ -339,44 +300,27 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
     else:
         css_fondo = ""
 
-    # --- PATRONES INTERNOS PARA LOS CUADROS (MÁS PRESENCIA, SIN PERDER LEGIBILIDAD) ---
-    if textura_cuadros == "Geometría Sutil":
-        css_textura_c_oscura = "background-image: linear-gradient(45deg, rgba(255,255,255,0.07) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.07) 75%), linear-gradient(45deg, rgba(255,255,255,0.07) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.07) 75%); background-size: 22px 22px; background-position: 0 0, 11px 11px;"
-        css_textura_c_clara = "background-image: linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%), linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%); background-size: 22px 22px; background-position: 0 0, 11px 11px;"
-    elif textura_cuadros == "Ondas Tenues":
-        css_textura_c_oscura = "background-image: radial-gradient(circle, rgba(255,255,255,0.10) 0, rgba(255,255,255,0.10) 2px, transparent 2.5px); background-size: 16px 16px;"
-        css_textura_c_clara = "background-image: radial-gradient(circle, rgba(0,0,0,0.08) 0, rgba(0,0,0,0.08) 2px, transparent 2.5px); background-size: 16px 16px;"
-    elif textura_cuadros == "Líneas Diagonales":
-        css_textura_c_oscura = "background-image: repeating-linear-gradient(45deg, transparent, transparent 9px, rgba(255,255,255,0.07) 9px, rgba(255,255,255,0.07) 11px);"
-        css_textura_c_clara = "background-image: repeating-linear-gradient(45deg, transparent, transparent 9px, rgba(0,0,0,0.06) 9px, rgba(0,0,0,0.06) 11px);"
-    else:
-        css_textura_c_oscura = ""
-        css_textura_c_clara = ""
-
-
-
-    # --- ESCALAS RECALIBRADAS: fuentes más grandes para reducir espacios vacíos ---
     if modulos_activos == 1:
-        size_sucursal = "54px"
-        size_titulo_modulo = "30px"
-        size_subheading_llegada = "23px"
-        size_texto = "23px"  # Categorías gigantes
-        size_porcentaje = "38px"
-        size_precio = "27px"
+        size_sucursal = "58px"
+        size_titulo_modulo = "32px"
+        size_subheading_llegada = "24px"
+        size_texto = "24px"
+        size_porcentaje = "40px"
+        size_precio = "28px"
     elif modulos_activos == 2:
-        size_sucursal = "46px"
-        size_titulo_modulo = "26px"
-        size_subheading_llegada = "20px"
-        size_texto = "20px"  # Categorías muy visibles
-        size_porcentaje = "33px"
-        size_precio = "23px"
+        size_sucursal = "50px"
+        size_titulo_modulo = "28px"
+        size_subheading_llegada = "21px"
+        size_texto = "21px"
+        size_porcentaje = "35px"
+        size_precio = "24px"
     else: 
-        size_sucursal = "40px"
-        size_titulo_modulo = "23px"
-        size_subheading_llegada = "17px"
-        size_texto = "18px"  # Formato compacto pero con presencia
-        size_porcentaje = "29px"
-        size_precio = "20px"
+        size_sucursal = "44px"
+        size_titulo_modulo = "25px"
+        size_subheading_llegada = "18px"
+        size_texto = "19px"
+        size_porcentaje = "30px"
+        size_precio = "21px"
 
     sufijo_sucursal = html.escape(sucursal.replace("La Bodeguita ", "").upper())
     gancho_safe = html.escape(gancho)
@@ -384,28 +328,27 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
     fecha_llegada_safe = html.escape(fecha_llegada.strip().upper())
     html_modulos = ""
     
-    # Lógica 1: "LLEGA PARA TI:"
     if mostrar_llegada:
         html_llegada_interior = ""
         if fecha_llegada_safe:
-            html_llegada_interior += f"<div class='pill-fecha'>🚀 {fecha_llegada_safe} 🚀</div>"
+            html_llegada_interior += f"<div style='text-align:center;'><div class='pill-fecha'>🚀 {fecha_llegada_safe} 🚀</div></div>"
         
         if llegada_gancho_activas:
             gancho_fusionado = fusionar_adultos(llegada_gancho_activas.copy())
-            li_gancho = "".join([f"<div class='li-item'>• {html.escape(c.upper())}</div>" for c in gancho_fusionado])
+            li_gancho = "".join([f"<div class='li-item'>{html.escape(c.upper())}</div>" for c in gancho_fusionado])
             html_llegada_interior += f"""
             <div class='llegada-grupo'>
-                <b class='llegada-subtitulo'>ROPA COLGADA EN GANCHO</b>
+                <span class='llegada-subtitulo'>ROPA COLGADA EN GANCHO</span>
                 {li_gancho}
             </div>
             """
             
         if llegada_tabla_activas:
             tabla_fusionada = fusionar_adultos(llegada_tabla_activas.copy())
-            li_tabla = "".join([f"<div class='li-item'>• {html.escape(c.upper())}</div>" for c in tabla_fusionada])
+            li_tabla = "".join([f"<div class='li-item'>{html.escape(c.upper())}</div>" for c in tabla_fusionada])
             html_llegada_interior += f"""
             <div class='llegada-grupo'>
-                <b class='llegada-subtitulo'>ROPA DE TABLA</b>
+                <span class='llegada-subtitulo'>ROPA DE TABLA</span>
                 {li_tabla}
             </div>
             """
@@ -414,16 +357,15 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
             if llegada_gancho_activas or llegada_tabla_activas:
                 html_llegada_interior += "<div class='divisor-suave'></div>"
             for o in llegada_otros_activas:
-                html_llegada_interior += f"<div class='li-otro'>📌 {html.escape(o.upper())}</div>"
+                html_llegada_interior += f"<div class='li-otro'>{html.escape(o.upper())}</div>"
                 
         html_modulos += f"""
         <div class="card card-dark">
-            <h3 class="title-glow">LLEGA PARA TI:</h3>
+            <div class="title-glow">✨ LLEGA PARA TI ✨</div>
             {html_llegada_interior}
         </div>
         """
 
-    # Lógica 2: Descuentos en Ropa de Gancho
     if mostrar_gancho:
         gancho_dict = fusionar_adultos(gancho_dict)
         grupos_desc = {}
@@ -431,50 +373,69 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
             if desc not in grupos_desc: grupos_desc[desc] = []
             grupos_desc[desc].append(cat.upper())
             
-        bloques_desc_html = ""
-        for desc, categories in sorted(grupos_desc.items(), reverse=True):
+        lista_grupos = []
+        for desc, categories in grupos_desc.items():
             texto_cats = " Y ".join(categories) if len(categories) <= 2 else ", ".join(categories[:-1]) + " Y " + categories[-1]
+            es_largo = len(texto_cats.split()) > 3
+            lista_grupos.append((desc, texto_cats, es_largo))
+            
+        lista_grupos.sort(key=lambda x: (x[2], x[0]), reverse=True)
+
+        bloques_desc_html = ""
+        for desc, texto_cats, es_largo in lista_grupos:
+            span_class = " span-full" if es_largo else ""
             bloques_desc_html += f"""
-            <div class='fila-descuento'>
+            <div class='fila-descuento{span_class}'>
                 <div class='badge-percent'>
                     <span class='badge-num'>{desc}%</span>
                 </div>
-                <span class='texto-descuento'>
-                    DE DESCUENTO EN<br><span class='texto-categoria'>{html.escape(texto_cats)}</span>
-                </span>
+                <div class='texto-descuento'>
+                    <span style='opacity: 0.8; font-size: 0.85em; text-transform: uppercase;'>Descuento en</span><br>
+                    <span class='texto-categoria'>{html.escape(texto_cats)}</span>
+                </div>
             </div>
             """
             
         html_modulos += f"""
-        <div class="card card-light">
-            <h3 class="title-pill">🔥 DESCUENTOS EN ROPA<br>COLGADA EN GANCHO 🔥</h3>
-            {bloques_desc_html}
+        <div class="card card-dark">
+            <div class="title-pill" style="background: rgba(255,255,255,0.08); color: var(--card-dark-fg); box-shadow: none;">🔥 DESCUENTOS EN ROPA 🔥<br><span style="font-size: 0.7em; opacity: 0.8;">COLGADA EN GANCHO</span></div>
+            <div class="grid-descuentos">
+                {bloques_desc_html}
+            </div>
         </div>
         """
 
-    # Lógica 3: Ropa de Tabla
     if mostrar_tabla:
         tabla_dict = fusionar_adultos(tabla_dict)
-        items_tabla = ""
+        lista_tabla = []
         for cat, precio in tabla_dict.items():
+            es_largo = len(cat.split()) > 3
+            lista_tabla.append((cat, precio, es_largo))
+            
+        # Stable sort: keep original order but pull large ones to the front
+        lista_tabla.sort(key=lambda x: x[2], reverse=True)
+
+        items_tabla = ""
+        for cat, precio, es_largo in lista_tabla:
+            span_class = " span-full" if es_largo else ""
             items_tabla += f"""
-            <div class='chip-precio'>
-                <span class='chip-cat'>📌 {html.escape(cat.upper())}</span>
-                <span class='chip-precio-valor'><b class='chip-precio-num'>${precio}</b> LA PIEZA</span>
+            <div class='chip-precio{span_class}'>
+                <span class='chip-cat'>🏷️ {html.escape(cat.upper())}</span>
+                <span class='chip-precio-valor'><b class='chip-precio-num'>${precio}</b><span style="font-size: 0.75em; opacity: 0.8; font-weight: 600; color: #555555; display: block; margin-top: -2px;">LA PIEZA</span></span>
             </div>
             """
         
         html_modulos += f"""
-        <div class="card card-tabla">
+        <div class="card-tabla">
             <div class="ticket-header">ROPA DE TABLA</div>
-            <div class="ticket-perforacion"></div>
-            <div class="grid-precios">
-                {items_tabla}
+            <div class="ticket-body">
+                <div class="grid-precios">
+                    {items_tabla}
+                </div>
             </div>
         </div>
         """
 
-    # --- PLANTILLA MAESTRA ADAPTABLE CON MÁRGENES COMPACTOS ---
     html_completo = f"""
     <!DOCTYPE html>
     <html>
@@ -495,7 +456,11 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 --card-light-fg: {c_paleta['card_clara_fg']};
                 --texto-sobre-borde: {texto_sobre_borde};
                 --texto-sobre-acento: {texto_sobre_acento};
-                --acento-en-claro: {acento_en_claro};
+                --acento-claro: {acento_claro};
+                --acento-oscuro: {acento_oscuro};
+                --acento-canvas: {acento_canvas};
+                --color-precio-alt: {color_precio_alt};
+                --color-descuento-alt: {color_descuento_alt};
                 --font-title: {c_fuente['titulos']};
                 --font-body: {c_fuente['cuerpo']};
                 --size-sucursal: {size_sucursal};
@@ -510,97 +475,105 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
 
             body {{
                 font-family: var(--font-body);
-                background: #eef0f3;
-                padding: 24px 5px;
+                background: linear-gradient(135deg, #e0e5ec 0%, #f4f6f8 100%);
+                padding: 40px 10px;
                 text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
             }}
 
             .contenedor-canvas {{
-                width: 432px;
+                width: 500px;
                 background-color: var(--bg-canvas);
                 {css_fondo}
-                padding: 20px 16px;
-                border: 3px solid var(--borde-canvas);
-                border-radius: 22px;
-                box-shadow:
-                    inset 0 0 0 2px rgba(255,255,255,0.18),
-                    inset 0 2px 10px rgba(255,255,255,0.12),
-                    0 26px 50px -16px rgba(0,0,0,0.45),
-                    0 4px 10px rgba(0,0,0,0.15);
+                padding: 24px 16px;
+                border: none;
+                border-radius: 28px;
+                box-shadow: 
+                    0 40px 80px -20px rgba(0,0,0,0.3),
+                    inset 0 0 0 2px rgba(255,255,255,0.2),
+                    inset 0 0 30px rgba(255,255,255,0.1);
                 margin: 0 auto;
                 position: relative;
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
-                gap: 14px;
+                gap: 12px;
+                z-index: 1;
             }}
 
-            /* --- ENCABEZADO --- */
             .ribbon-gancho {{
+                position: absolute;
+                top: 0; left: 0; right: 0;
                 font-size: 22px;
+                font-weight: 900;
                 font-family: var(--font-title);
-                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['borde_canvas'], 0.12)} 0%, var(--borde-canvas) 60%);
+                background: linear-gradient(135deg, var(--borde-canvas) 0%, {ajustar_brillo(c_paleta['borde_canvas'], -0.2)} 100%);
                 color: var(--texto-sobre-borde);
-                padding: 10px 14px 18px 14px;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                line-height: 1.15;
-                box-shadow: 0 10px 16px -8px rgba(0,0,0,0.45);
-                clip-path: polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%);
-            }}
-
-            .masthead {{ line-height: 1; }}
-            .marca-principal {{
-                font-size: 19px;
-                font-family: var(--font-title);
-                color: var(--texto-ppal);
+                padding: 12px 16px 16px 16px;
                 text-transform: uppercase;
                 letter-spacing: 2px;
-                font-weight: normal;
+                line-height: 1.2;
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+                clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+                z-index: 10;
+            }}
+
+            .masthead {{ 
+                margin-top: 40px; 
+                line-height: 1.1; 
+                position: relative;
+                z-index: 2;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }}
+            .marca-principal {{
+                font-size: 18px;
+                font-family: var(--font-body);
+                color: var(--texto-ppal);
+                text-transform: uppercase;
+                letter-spacing: 6px;
+                font-weight: 800;
                 opacity: 0.85;
-                margin-bottom: 2px;
             }}
             .sucursal-estricta {{
                 font-size: var(--size-sucursal);
                 font-family: var(--font-title);
-                color: var(--acento);
+                color: var(--acento-canvas);
                 text-transform: uppercase;
-                letter-spacing: 0.5px;
+                letter-spacing: 1px;
                 font-weight: 900;
-                white-space: nowrap;
-                text-shadow: 0 2px 0 rgba(0,0,0,0.12);
+                text-shadow: 2px 2px 0 rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.15);
+                line-height: 1;
             }}
 
-            /* --- TARJETAS --- */
             .card {{
                 position: relative;
-                border-radius: 16px;
-                padding: 16px 15px;
+                border-radius: 20px;
+                padding: 16px 16px;
                 text-align: left;
-                box-shadow:
-                    0 2px 0 rgba(255,255,255,0.10) inset,
-                    0 14px 26px -12px rgba(0,0,0,0.40),
-                    0 3px 6px rgba(0,0,0,0.12);
+                box-shadow: 
+                    0 20px 40px rgba(0,0,0,0.12),
+                    inset 0 1px 1px rgba(255,255,255,0.2);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                z-index: 2;
+                overflow: hidden;
             }}
-            .card-dark::before, .card-light::before {{
-                content: "";
-                position: absolute;
-                top: 0; left: 0; right: 0;
-                height: 6px;
-                background: var(--acento);
-                border-radius: 16px 16px 0 0;
-            }}
+            
             .card-dark {{
-                background: linear-gradient(155deg, var(--card-dark-bg) 0%, {card_dark_grad_b} 100%);
+                background: linear-gradient(135deg, {hex_a_rgba(c_paleta['card_oscura_bg'], 0.85)} 0%, {hex_a_rgba(c_paleta['card_oscura_bg'], 0.95)} 100%);
                 color: var(--card-dark-fg);
-                border: 1px solid rgba(255,255,255,0.08);
-                {css_textura_c_oscura}
+                border: 1px solid rgba(255,255,255,0.15);
             }}
             .card-light {{
-                background: linear-gradient(155deg, var(--card-light-bg) 0%, {card_light_grad_b} 100%);
+                background: linear-gradient(135deg, {hex_a_rgba(c_paleta['card_clara_bg'], 0.9)} 0%, {hex_a_rgba(c_paleta['card_clara_bg'], 0.98)} 100%);
                 color: var(--card-light-fg);
-                border: 1px solid rgba(0,0,0,0.06);
-                {css_textura_c_clara}
+                border: 1px solid rgba(255,255,255,0.4);
             }}
 
             .title-glow {{
@@ -608,206 +581,287 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 font-family: var(--font-title);
                 font-size: var(--size-modulo);
                 letter-spacing: 1px;
-                line-height: 1.15;
-                margin: 0 0 10px 0;
-                padding: 7px 10px;
-                border-radius: 10px;
-                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['acento'], 0.15)} 0%, var(--acento) 100%);
+                line-height: 1.2;
+                margin: 0 0 12px 0;
+                padding: 8px 16px;
+                border-radius: 12px;
+                text-transform: uppercase;
+                background: linear-gradient(135deg, var(--acento) 0%, {ajustar_brillo(c_paleta['acento'], -0.2)} 100%);
                 color: var(--texto-sobre-acento);
-                box-shadow: 0 5px 10px -4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
-                white-space: nowrap;
+                box-shadow: 0 10px 20px {hex_a_rgba(c_paleta['acento'], 0.4)}, inset 0 2px 0 rgba(255,255,255,0.2);
             }}
             .title-pill {{
                 text-align: center;
                 font-family: var(--font-title);
                 font-size: var(--size-modulo);
-                letter-spacing: 0.5px;
-                line-height: 1.15;
-                padding: 7px 10px;
-                border-radius: 10px;
-                margin: 0 0 10px 0;
-                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['bg_canvas'], 0.10)} 0%, var(--bg-canvas) 100%);
+                letter-spacing: 1px;
+                line-height: 1.2;
+                margin: 0 0 12px 0;
+                padding: 8px 16px;
+                border-radius: 12px;
+                text-transform: uppercase;
+                background: linear-gradient(135deg, var(--bg-canvas) 0%, {ajustar_brillo(c_paleta['bg_canvas'], -0.1)} 100%);
                 color: var(--texto-ppal);
-                box-shadow: 0 5px 10px -4px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
-            }}
-            .title-pill.dark-bg {{
-                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['card_oscura_bg'], 0.10)} 0%, var(--card-dark-bg) 100%);
-                color: var(--card-dark-fg);
-                white-space: nowrap;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.3);
             }}
 
             .pill-fecha {{
                 text-align: center;
-                background: var(--bg-canvas);
-                color: var(--texto-ppal);
-                padding: 6px 8px;
+                background: var(--acento);
+                color: var(--texto-sobre-acento);
+                padding: 6px 12px;
                 font-size: var(--size-texto);
-                font-weight: 900;
-                margin-bottom: 8px;
-                border-radius: 8px;
-                font-family: var(--font-title);
+                font-weight: 800;
+                margin-bottom: 12px;
+                border-radius: 16px;
+                font-family: var(--font-body);
                 letter-spacing: 1px;
+                box-shadow: 0 8px 16px {hex_a_rgba(c_paleta['acento'], 0.3)};
+                display: inline-block;
             }}
-            .llegada-grupo {{ margin-bottom: 10px; line-height: 1.3; }}
+            .llegada-grupo {{ margin-bottom: 10px; }}
             .llegada-subtitulo {{
-                color: var(--bg-canvas);
+                color: var(--acento-oscuro);
                 font-size: var(--size-sub);
                 font-family: var(--font-title);
-                letter-spacing: 0.5px;
+                letter-spacing: 1px;
+                display: block;
+                margin-bottom: 4px;
+                text-transform: uppercase;
             }}
             .li-item, .li-otro {{
-                margin-left: 4px;
                 font-size: var(--size-texto);
-                font-weight: 700;
-            }}
-            .li-otro {{ margin-bottom: 3px; }}
-            .divisor-suave {{
-                margin: 6px 0;
-                border-top: 1px solid rgba(255,255,255,0.15);
-            }}
-
-            /* --- DESCUENTOS: INSIGNIA EN FORMA DE ESTRELLA --- */
-            .fila-descuento {{
+                font-weight: 600;
+                margin-bottom: 2px;
                 display: flex;
                 align-items: center;
-                margin-bottom: 16px;
             }}
-            .fila-descuento:last-child {{ margin-bottom: 0; }}
+            .li-item::before, .li-otro::before {{
+                content: '✨';
+                font-size: 16px;
+                margin-right: 8px;
+            }}
+            .li-otro::before {{ content: '📌'; }}
+
+            .divisor-suave {{
+                margin: 8px 0;
+                border-top: 1px dashed rgba(255,255,255,0.2);
+            }}
+
+            .grid-descuentos {{
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }}
+            .fila-descuento {{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                background: rgba(255,255,255,0.08);
+                padding: 12px 8px;
+                border-radius: 16px;
+                border: 1px solid rgba(255,255,255,0.1);
+            }}
+            .fila-descuento.span-full {{
+                grid-column: 1 / -1;
+                flex-direction: row;
+                text-align: left;
+            }}
+            .fila-descuento.span-full .badge-percent {{
+                margin-bottom: 0;
+                margin-right: 16px;
+            }}
+            .fila-descuento.span-full .texto-descuento {{
+                text-align: left;
+            }}
+            
             .badge-percent {{
                 position: relative;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                min-width: 118px;
-                width: 118px;
-                height: 118px;
-                clip-path: {ESTRELLA_INSIGNIA_CLIP};
-                background:
-                    radial-gradient(circle at 32% 26%, rgba(255,255,255,0.55), rgba(255,255,255,0) 55%),
-                    linear-gradient(155deg, {ajustar_brillo(c_paleta['acento'], 0.10)} 0%, var(--acento) 70%);
-                filter:
-                    drop-shadow(0 0 16px {acento_resplandor})
-                    drop-shadow(0 8px 8px rgba(0,0,0,0.40));
-                margin-right: 12px;
+                min-width: 70px;
+                width: 70px;
+                height: 70px;
+                background: linear-gradient(135deg, var(--acento) 0%, {ajustar_brillo(c_paleta['acento'], -0.2)} 100%);
+                border-radius: 50%;
+                filter: drop-shadow(0 8px 16px {hex_a_rgba(c_paleta['acento'], 0.4)});
+                margin-bottom: 8px;
                 flex-shrink: 0;
+                color: var(--texto-sobre-acento);
+                border: 4px solid rgba(255,255,255,0.4);
+            }}
+            .badge-percent::after {{
+                content: '';
+                position: absolute;
+                top: 3px; left: 3px; right: 3px; bottom: 3px;
+                border-radius: 50%;
+                border: 1px dashed rgba(255,255,255,0.6);
             }}
             .badge-num {{
-                color: var(--texto-sobre-acento);
                 font-family: var(--font-title);
                 font-size: var(--size-badge);
                 line-height: 1;
+                font-weight: 900;
+                z-index: 2;
             }}
             .texto-descuento {{
                 font-size: var(--size-texto);
-                font-weight: 900;
-                line-height: 1.3;
-                text-align: left;
+                font-weight: 700;
+                line-height: 1.4;
+                text-align: center;
                 font-family: var(--font-body);
+                color: var(--card-dark-fg);
             }}
-            .texto-categoria {{ color: var(--acento-en-claro); }}
+            .texto-categoria {{ 
+                color: var(--color-descuento-alt); 
+                font-weight: 900; 
+                text-transform: uppercase;
+                background: rgba(0,0,0,0.05);
+                padding: 3px 8px;
+                border-radius: 6px;
+                display: inline-block;
+                margin-top: 4px;
+            }}
 
-            /* --- TABLA DE PRECIOS: TARJETA TIPO TICKET (identidad propia) --- */
             .card-tabla {{
                 position: relative;
-                background-color: var(--card-light-bg);
-                background-image:
-                    repeating-linear-gradient(135deg, {ticket_raya} 0px 6px, transparent 6px 14px),
-                    linear-gradient(160deg, {ticket_wash} 0%, transparent 65%);
-                color: var(--card-light-fg);
-                border: 2px dashed var(--acento);
-                padding: 0 14px 16px 14px;
+                background: linear-gradient(135deg, {hex_a_rgba(c_paleta['card_oscura_bg'], 0.85)} 0%, {hex_a_rgba(c_paleta['card_oscura_bg'], 0.95)} 100%);
+                color: var(--card-dark-fg);
+                border: 1px solid rgba(255,255,255,0.15);
+                border-radius: 20px;
+                padding: 0;
                 overflow: hidden;
-                box-shadow: inset 0 0 18px rgba(0,0,0,0.06);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.12);
             }}
             .ticket-header {{
-                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['borde_canvas'], 0.12)} 0%, var(--borde-canvas) 70%);
+                background: linear-gradient(135deg, var(--borde-canvas) 0%, {ajustar_brillo(c_paleta['borde_canvas'], -0.2)} 100%);
                 color: var(--texto-sobre-borde);
                 font-family: var(--font-title);
                 font-size: var(--size-modulo);
                 text-align: center;
-                letter-spacing: 1px;
-                line-height: 1.3;
-                padding: 9px 10px;
-                margin: 0 -14px 0 -14px;
-                white-space: nowrap;
-                box-shadow: 0 4px 10px -4px rgba(0,0,0,0.3);
+                letter-spacing: 2px;
+                line-height: 1.2;
+                padding: 12px 8px;
+                text-transform: uppercase;
             }}
-            .ticket-perforacion {{
-                position: relative;
-                border-bottom: 2px dashed var(--acento);
-                opacity: 0.55;
-                margin: 12px 0 12px 0;
+            .ticket-body {{
+                padding: 16px;
+                background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1.5px, transparent 1.5px);
+                background-size: 14px 14px;
             }}
-            .ticket-perforacion::before, .ticket-perforacion::after {{
-                content: "";
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: var(--bg-canvas);
-            }}
-            .ticket-perforacion::before {{ left: -9px; }}
-            .ticket-perforacion::after {{ right: -9px; }}
             .grid-precios {{
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }}
             .chip-precio {{
-                position: relative;
-                background: linear-gradient(155deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%);
-                border-left: 4px solid var(--acento-en-claro);
-                border-radius: 8px;
-                padding: 8px 10px;
                 display: flex;
                 flex-direction: column;
-                font-family: var(--font-body);
-                box-shadow: 0 4px 8px -4px rgba(0,0,0,0.22);
-                clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 0 100%);
-            }}
-            .chip-cat {{ font-size: var(--size-texto); font-weight: 900; line-height: 1.15; }}
-            .chip-precio-valor {{ font-size: var(--size-texto); font-weight: 900; line-height: 1.15; }}
-            .chip-precio-num {{ color: var(--acento-en-claro); font-size: var(--size-precio); font-family: var(--font-title); }}
-
-            /* --- PIE: VIGENCIA Y HORARIO --- */
-            .footer-bar {{
-                background: linear-gradient(155deg, {ajustar_brillo(c_paleta['borde_canvas'], 0.12)} 0%, var(--borde-canvas) 70%);
-                color: var(--bg-canvas);
-                padding: 16px 12px 10px 12px;
+                align-items: center;
                 text-align: center;
-                margin-top: auto;
-                box-shadow: 0 -2px 14px -6px rgba(0,0,0,0.25), 0 8px 16px -8px rgba(0,0,0,0.35);
-                clip-path: polygon(0% 18%, 50% 0%, 100% 18%, 100% 100%, 0% 100%);
+                background: rgba(255,255,255,0.9);
+                border-radius: 12px;
+                padding: 10px;
+                box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+                border-top: 6px solid var(--acento);
+            }}
+            .chip-precio.span-full {{
+                grid-column: 1 / -1;
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+                border-top: none;
+                border-left: 6px solid var(--acento);
+            }}
+            .chip-precio.span-full .chip-precio-valor {{
+                text-align: right;
+                margin-top: 0;
+            }}
+            .chip-cat {{ 
+                font-size: var(--size-texto); 
+                font-weight: 800; 
+                flex: 1;
+                text-transform: uppercase;
+                color: #222222;
+            }}
+            .chip-precio-valor {{ 
+                font-size: var(--size-texto); 
+                font-weight: 600; 
+                text-align: center;
+                line-height: 1.1;
+                margin-top: 4px;
+            }}
+            .chip-precio-num {{ 
+                color: var(--color-precio-alt); 
+                font-size: var(--size-precio); 
+                font-family: var(--font-title); 
+                font-weight: 900;
+                display: block;
+                margin-top: 2px;
+            }}
+
+            .footer-bar {{
+                background: linear-gradient(135deg, var(--borde-canvas) 0%, {ajustar_brillo(c_paleta['borde_canvas'], -0.2)} 100%);
+                color: var(--texto-sobre-borde);
+                padding: 16px 12px;
+                text-align: center;
+                border-radius: 20px;
+                box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+                margin-top: 4px;
+                position: relative;
+                z-index: 2;
             }}
             .footer-bar .vigencia {{
-                font-size: 19px;
+                font-size: 14px;
                 font-family: var(--font-title);
-                letter-spacing: 0.5px;
-                margin-bottom: 3px;
+                letter-spacing: 1px;
+                margin-bottom: 4px;
+                text-transform: uppercase;
+                color: var(--texto-sobre-borde);
+                background: rgba(255,255,255,0.15);
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 8px;
             }}
             .footer-bar .horario {{
-                font-size: 11px;
-                font-weight: 700;
-                opacity: 0.9;
+                font-size: 14px;
+                font-weight: 600;
+                font-family: var(--font-body);
+                opacity: 0.85;
+                margin-top: 4px;
             }}
 
             .btn-descargar {{
-                background: #25D366;
+                background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
                 color: white;
                 border: none;
-                padding: 13px 26px;
+                padding: 18px 40px;
                 font-family: var(--font-title);
                 font-size: 22px;
-                border-radius: 30px;
+                border-radius: 40px;
                 cursor: pointer;
-                margin-top: 18px;
-                box-shadow: 0 10px 22px -8px rgba(0,0,0,0.45);
+                margin-top: 40px;
+                box-shadow: 0 15px 30px rgba(56, 239, 125, 0.4);
                 letter-spacing: 1px;
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                text-transform: uppercase;
+                font-weight: 900;
             }}
-            .btn-descargar:active {{ transform: translateY(2px); box-shadow: 0 4px 10px -4px rgba(0,0,0,0.4); }}
-            .btn-descargar:disabled {{ opacity: 0.7; cursor: wait; }}
+            .btn-descargar:hover {{ 
+                transform: translateY(-4px); 
+                box-shadow: 0 20px 40px rgba(56, 239, 125, 0.5); 
+            }}
+            .btn-descargar:active {{ 
+                transform: translateY(2px); 
+                box-shadow: 0 8px 15px rgba(56, 239, 125, 0.4); 
+            }}
+            .btn-descargar:disabled {{ 
+                opacity: 0.7; 
+                cursor: wait; 
+                transform: none;
+            }}
         </style>
     </head>
     <body>
@@ -820,7 +874,7 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 <div class="sucursal-estricta">{sufijo_sucursal}</div>
             </div>
 
-            <div style="display:flex; flex-direction:column; justify-content:center; gap:14px;">
+            <div style="display:flex; flex-direction:column; justify-content:center; gap:12px;">
                 {html_modulos}
             </div>
 
@@ -839,9 +893,6 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
             boton.disabled = true;
             boton.innerText = '⏳ GENERANDO...';
 
-            // Espera a que las fuentes de Google Fonts terminen de cargar
-            // antes de capturar; si no, html2canvas puede tomar la foto
-            // con la tipografía de respaldo del sistema y se ve "feo".
             document.fonts.ready.then(() => {{
                 setTimeout(() => {{
                     const elemento = document.getElementById('anuncioPublicitario');
@@ -849,7 +900,7 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                         scale: 2.5,
                         useCORS: true,
                         backgroundColor: null,
-                        width: 432,
+                        width: 500,
                         height: elemento.offsetHeight
                     }}).then(canvas => {{
                         let enlace = document.createElement('a');
@@ -859,7 +910,7 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                         boton.disabled = false;
                         boton.innerText = textoOriginal;
                     }});
-                }}, 250);
+                }}, 300);
             }});
         }}
         </script>
@@ -867,5 +918,5 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
     </html>
     """
 
-    st.success("¡Diseño actualizado! Tarjetas con sombras suaves, badges sin clip-path y espera de fuentes antes de exportar.")
-    components.html(html_completo, height=1000, scrolling=True)
+    st.success("✨ ¡Diseño Premium Generado! Disfruta de sombras suaves, tipografía moderna, bordes redondeados, y texturas tipo cristal.")
+    components.html(html_completo, height=1200, scrolling=True)
