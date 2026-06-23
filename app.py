@@ -110,7 +110,25 @@ with col_2:
     paleta_sel = st.selectbox("1. Paleta de Colores:", list(paletas.keys()))
     c_paleta = paletas[paleta_sel]
     
-    fuente_sel = st.selectbox("2. Combinación Tipográfica (Fuentes):", list(fuentes.keys()))
+    fuente_names = list(fuentes.keys())
+    fuente_imports = "".join(
+        f"<style>{f['import']}</style>" for f in fuentes.values()
+    )
+    # Build CSS: each radio label nth-child gets its own font
+    fuente_list = list(fuentes.values())
+    radio_css_rules = ""
+    for i, fdata in enumerate(fuente_list, start=1):
+        # Streamlit radio: each option is a label inside a fieldset
+        radio_css_rules += (
+            f"div[data-testid='stRadio'] label:nth-of-type({i}) p "
+            f"{{ font-family: {fdata['titulos']} !important; "
+            f"font-size: 15px !important; font-weight: 700 !important; }}"
+        )
+    st.markdown(
+        fuente_imports + f"<style>{radio_css_rules}</style>",
+        unsafe_allow_html=True
+    )
+    fuente_sel = st.radio("2. Combinación Tipográfica (Fuentes):", fuente_names)
     c_fuente = fuentes[fuente_sel]
     
     textura_fondo = st.selectbox("3. Patrón del Fondo:", ["Liso Sólido", "Triángulos Geométricos", "Olas Chevron", "Rombos 3D", "Ondas Circulares"])
@@ -305,21 +323,21 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
         size_titulo_modulo = "32px"
         size_subheading_llegada = "24px"
         size_texto = "24px"
-        size_porcentaje = "40px"
+        size_porcentaje = "26px"
         size_precio = "28px"
     elif modulos_activos == 2:
         size_sucursal = "50px"
         size_titulo_modulo = "28px"
         size_subheading_llegada = "21px"
         size_texto = "21px"
-        size_porcentaje = "35px"
+        size_porcentaje = "23px"
         size_precio = "24px"
     else: 
         size_sucursal = "44px"
         size_titulo_modulo = "25px"
         size_subheading_llegada = "18px"
         size_texto = "19px"
-        size_porcentaje = "30px"
+        size_porcentaje = "20px"
         size_precio = "21px"
 
     sufijo_sucursal = html.escape(sucursal.replace("La Bodeguita ", "").upper())
@@ -390,7 +408,7 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                     <span class='badge-num'>{desc}%</span>
                 </div>
                 <div class='texto-descuento'>
-                    <span style='opacity: 0.8; font-size: 0.85em; text-transform: uppercase;'>Descuento en</span><br>
+                    <span style='opacity: 0.8; font-size: 0.85em; text-transform: uppercase;'>De descuento en</span><br>
                     <span class='texto-categoria'>{html.escape(texto_cats)}</span>
                 </div>
             </div>
@@ -593,13 +611,14 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
             .title-pill {{
                 text-align: center;
                 font-family: var(--font-title);
-                font-size: var(--size-modulo);
-                letter-spacing: 1px;
+                font-size: calc(var(--size-modulo) - 8px);
+                letter-spacing: 0.5px;
                 line-height: 1.2;
                 margin: 0 0 12px 0;
-                padding: 8px 16px;
+                padding: 8px 14px;
                 border-radius: 12px;
                 text-transform: uppercase;
+                white-space: nowrap;
                 background: linear-gradient(135deg, var(--bg-canvas) 0%, {ajustar_brillo(c_paleta['bg_canvas'], -0.1)} 100%);
                 color: var(--texto-ppal);
                 box-shadow: 0 10px 20px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.3);
@@ -705,6 +724,11 @@ if st.button("🚀 PROCESAR Y VESTIR ANUNCIO VERTICAL", type="primary", use_cont
                 line-height: 1;
                 font-weight: 900;
                 z-index: 2;
+                max-width: 62px;
+                overflow: hidden;
+                text-overflow: clip;
+                letter-spacing: -1px;
+                text-align: center;
             }}
             .texto-descuento {{
                 font-size: var(--size-texto);
